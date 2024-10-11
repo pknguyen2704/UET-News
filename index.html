@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UET News</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <img id="logo" src="css/img/logo.jpg" alt="logo">
+        <h1 id="Webname">UET News</h1>
+    </header>
+
+    <main>
+        <div class="leftCol">
+            
+            <form>
+                <section>
+                    <p>Tiêu đề News</p>
+                    <input class="styled-input" placeholder="Nhập tiêu đề của News tại đây"></input>
+                </section>
+                <p>Nội dung của News</p>
+                <textarea id="newsInput" placeholder="Nhâp nội dung của News tại đây"></textarea>
+                <button id="newsSubmitBtn">Nhập</button>
+
+                <section>
+                    <p> Nhập file ảnh để tạo News </p>
+                    <input type="file" id="imageInput" accept="image/*">
+                    <img id="imagePreview" src="#" alt="Hình ảnh Preview">
+                </section>
+            </form>
+
+        </div>
+        <div class="rightCol">
+            <button class="newsCreate"> Tạo News </button>
+            <section>
+                <p>Caption</p>
+                <p id="previewText" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;"></p>
+            </section>
+            <section>
+                <p>Ấn phẩm</p>
+            </section>
+        </div>
+    </main>
+
+
+    <footer>
+        <p>Đây là website tạo bởi @andrew.pkn</p>
+        <p>© 2024 UET News. All Rights Reserved.</p>
+    </footer>
+    <script src="script.js"></script> 
+</body>
+</html>

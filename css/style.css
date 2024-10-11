@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
+}
+header {
+    background-color:rgb(67, 148, 217);
+    color: #fff;
+    display: block;
+}
+h1 {
+    display: inline-block;
+    text-align: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+#logo {
+    max-width: 50px;
+    height: 100%;
+}
+
+#imagePreview {
+    display: none; /* Ẩn hình ảnh preview mặc định */
+    max-width: 300px; /* Kích thước tối đa của hình ảnh preview */
+    margin-top: 10px; /* Khoảng cách giữa input và hình ảnh preview */
+}
+
+#previewText {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-height: 50px; /* Đảm bảo chiều cao tối thiểu cho phần preview */
+    display: block; /* Đảm bảo rằng nó luôn hiển thị */
+}
+#newsInput {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-height: 200px; /* Đảm bảo chiều cao tối thiểu cho phần preview */
+    width: 100%;
+    display: block; /* Đảm bảo rằng nó luôn hiển thị */
+}
+main {
+    display: flex;
+    max-height: max-content;
+}
+.leftCol{
+    flex: 1; /* Chiếm 50% chiều rộng */
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.rightCol {
+    flex: 1; /* Chiếm 50% chiều rộng */
+    background-color: #e6e6e6;
+    padding: 20px;
+}
+
+.styled-input {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.styled-input:focus {
+    border-color: #4a90e2; /* Màu khi focus */
+    outline: none; /* Xóa viền mặc định */
+}
