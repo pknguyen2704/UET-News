@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload và Vẽ Hình Ảnh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        #preview {
+            max-width: 500px;
+            max-height: 500px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload và Vẽ Hình Ảnh</h1>
+    <input type="file" id="upload" accept="image/*">
+    <img id="preview" alt="Hình ảnh Preview" style="display: none;">
+    <button id="draw">Vẽ Lại</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <button id="download">Tải Xuống PNG</button>
+
+    <script>
+        const uploadInput = document.getElementById('upload');
+        const previewImage = document.getElementById('preview');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const drawButton = document.getElementById('draw');
+        const downloadButton = document.getElementById('download');
+
+        let img = new Image();
+        const overlayImage = new Image();
+        overlayImage.src = 'overlay.png'; // Thay đổi đường dẫn tới hình ảnh PNG của bạn
+
+        uploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block'; // Hiển thị hình ảnh preview
+                    canvas.style.display = 'none'; // Ẩn canvas
+                    downloadButton.style.display = 'none'; // Ẩn nút tải xuống
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        drawButton.addEventListener('click', () => {
+            img.src = previewImage.src;
+            img.onload = () => {
+                // Đặt kích thước canvas theo kích thước hình ảnh
+                canvas.width = img.width;
+                canvas.height = img.height;
+                // Vẽ hình ảnh upload lên canvas
+                ctx.drawImage(img, 0, 0);
+                // Vẽ hình ảnh overlay lên canvas
+                ctx.drawImage(overlayImage, 0, 0); // Thay đổi tọa độ nếu cần
+                canvas.style.display = 'block'; // Hiển thị canvas
+                downloadButton.style.display = 'block'; // Hiển thị nút tải xuống
+            };
+        });
+
+        downloadButton.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    </script>
+</body>
+</html>
