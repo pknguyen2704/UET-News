@@ -5,79 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload và Vẽ Hình Ảnh</title>
     <style>
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('fonts/MyCustomFont.ttf') format('truetype');
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'MyCustomFont', Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 20px;
         }
 
-        #preview {
-            max-width: 500px;
-            max-height: 500px;
+        #imageContainer {
+            border: 2px dashed #ccc;
+            width: 500px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-top: 20px;
-            border: 1px solid #ccc;
+            position: relative;
+            cursor: pointer;
         }
 
-        canvas {
-            border: 1px solid #ccc;
-            margin-top: 20px;
+        #upload {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        #preview {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
         }
 
         button {
-            margin-top: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Upload và Vẽ Hình Ảnh</h1>
-    <input type="file" id="upload" accept="image/*">
-    <img id="preview" alt="Hình ảnh Preview" style="display: none;">
+    
+    <div id="imageContainer">
+        <img id="preview" alt="Hình ảnh Preview">
+        <p>Nhấp để tải lên hoặc Ctrl + V để dán</p>
+    </div>
+
+    <button id="uploadButton">Tải lên hình ảnh</button>
+    <button id="clearButton" style="display: none;">Xóa Ảnh</button> <!-- Nút xóa ảnh -->
+
+    <input type="text" id="textInput" placeholder="Nhập chữ bạn muốn vẽ" style="margin-top: 20px;">
+    <input type="number" id="fontSizeInput" placeholder="Kích thước chữ" min="10" max="100" value="24" style="margin-top: 10px;">
+    
     <button id="draw">Vẽ Lại</button>
-    <canvas id="canvas" style="display: none;"></canvas>
-    <button id="download">Tải Xuống PNG</button>
+    <button id="download" style="display: none;">Tải Xuống PNG</button>
 
     <script>
-        const uploadInput = document.getElementById('upload');
+        const uploadInput = document.createElement('input');
+        uploadInput.type = 'file';
+        uploadInput.accept = 'image/*';
+        uploadInput.style.display = 'none';
+
         const previewImage = document.getElementById('preview');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
         const drawButton = document.getElementById('draw');
         const downloadButton = document.getElementById('download');
+        const clearButton = document.getElementById('clearButton');
+        const textInput = document.getElementById('textInput');
+        const fontSizeInput = document.getElementById('fontSizeInput');
 
-        let img = new Image();
-        const overlayImage = new Image();
-        overlayImage.src = 'overlay.png'; // Thay đổi đường dẫn tới hình ảnh PNG của bạn
+        let canvas, context;
+
+        function displayImage(src) {
+            previewImage.src = src;
+            previewImage.style.display = 'block';
+            downloadButton.style.display = 'none';
+            clearButton.style.display = 'inline'; // Hiển thị nút xóa ảnh
+        }
 
         uploadInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewImage.src = e.target.result;
-                    previewImage.style.display = 'block'; // Hiển thị hình ảnh preview
-                    canvas.style.display = 'none'; // Ẩn canvas
-                    downloadButton.style.display = 'none'; // Ẩn nút tải xuống
-                };
+                reader.onload = (e) => displayImage(e.target.result);
                 reader.readAsDataURL(file);
             }
         });
 
+        document.body.addEventListener('paste', (event) => {
+            const items = event.clipboardData.items;
+            for (let item of items) {
+                if (item.type.startsWith('image/')) {
+                    const file = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = (e) => displayImage(e.target.result);
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        document.getElementById('uploadButton').addEventListener('click', () => {
+            uploadInput.click();
+        });
+
+        clearButton.addEventListener('click', () => {
+            previewImage.src = '';
+            previewImage.style.display = 'none';
+            clearButton.style.display = 'none';
+            downloadButton.style.display = 'none';
+        });
+
         drawButton.addEventListener('click', () => {
+            canvas = document.createElement('canvas');
+            context = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 600;
+
+            const img = new Image();
             img.src = previewImage.src;
             img.onload = () => {
-                // Đặt kích thước canvas theo kích thước hình ảnh
-                canvas.width = img.width;
-                canvas.height = img.height;
-                // Vẽ hình ảnh upload lên canvas
-                ctx.drawImage(img, 0, 0);
-                // Vẽ hình ảnh overlay lên canvas
-                ctx.drawImage(overlayImage, 0, 0); // Thay đổi tọa độ nếu cần
-                canvas.style.display = 'block'; // Hiển thị canvas
-                downloadButton.style.display = 'block'; // Hiển thị nút tải xuống
+                context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                drawText();
+                document.body.appendChild(canvas);
+                downloadButton.style.display = 'block';
             };
         });
+
+        function drawText() {
+            const textToDraw = textInput.value || 'Chữ mặc định';
+            const fontSize = fontSizeInput.value || 24;
+            context.font = `${fontSize}px MyCustomFont`;
+            context.fillStyle = 'red';
+            context.fillText(textToDraw, 50, 50);
+        }
 
         downloadButton.addEventListener('click', () => {
             const link = document.createElement('a');
@@ -85,6 +149,8 @@
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
+
+        document.body.appendChild(uploadInput);
     </script>
 </body>
 </html>

@@ -15,11 +15,33 @@ html {
 
 
 header {
-    background-color:rgb(67, 148, 217);
+    background-color:#000;
+    display: block;
+    height: 60px;
+    padding: 10px;
+    align-items: center;
+
+}
+#webName {
+    padding-left: 10px;
     color: #fff;
+    text-transform: uppercase;
+    font-size: large;
+}
+.label {
+    font-size: 20px;
+    margin-bottom: 10px;
     display: block;
 }
-
+input {
+    margin-bottom: 30px;
+}
+textarea {
+    margin-bottom: 30px;
+}
+nav {
+    background-color: #aaa;
+}
 main {
     display: flex;
     max-height: max-content;
@@ -88,6 +110,34 @@ h1 {
 
 #imageCanvas {
     display: none; /* Ẩn hình ảnh preview mặc định */
-    max-width: 300px; /* Kích thước tối đa của hình ảnh preview */
+    max-width: 80%; /* Kích thước tối đa của hình ảnh preview */
     margin-top: 10px; /* Khoảng cách giữa input và hình ảnh preview */
+}
+
+#captionPreview {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #333;
+    border: 1px dashed #aaa;
+    padding: 10px;
+    min-height: 50px;
+    width: 80%;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: pre-wrap; /* Giữ nguyên khoảng trắng và xuống dòng */
+}
+
+#imageContainer {
+    border: 2px dashed #ccc;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    cursor: pointer;
+}
+#clearImgBtn {
+    display: none;
 }

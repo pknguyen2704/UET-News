@@ -9,25 +9,26 @@
 <body>
     <header>
         <img id="logo" src="css/img/logo.png" alt="logo">
-        <h1 id="Webname">UET News</h1>
+        <h1 id="webName">UET News</h1>
     </header>
-
     <main>
         <div class="leftCol">
             
             <form>
                 <section>
-                    <p>Tiêu đề News</p>
+                    <p class="label">Tiêu đề News</p>
                     <input id="newsTitle" placeholder="Nhập tiêu đề của News tại đây"></input>
                 </section>
-                <p>Nội dung của News</p>
+                <p class="label">Nội dung của News</p>
                 <textarea id="newsInput" placeholder="Nhâp nội dung của News tại đây"></textarea>
-                <button id="newsSubmitBtn">Nhập</button>
 
                 <section>
-                    <p>Nhập file ảnh để tạo News </p>
+                    <p class="label">Upload hình ảnh hoặc paste ảnh để tạo News</p>
+                    <button id="clearImgBtn">Xóa ảnh</button>
+                    <div id="imageContainer">
+                        <img id="imagePreview" src="#" alt="Hình ảnh preview">
+                    </div>
                     <input type="file" id="imageInput" accept="image/*">
-                    <img id="imagePreview" src="#" alt="Hình ảnh preview">
                 </section>
             </form>
 
@@ -35,15 +36,15 @@
         <div class="rightCol">
             <button id="newsCreate"> Tạo News </button>
             <section>
-                <p>Caption</p>
-                <p id="previewText" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;"></p>
+                <p class="label">Caption</p>
+                <div id="captionPreview"></div>
             </section>
             <section>
-                <p>Ấn phẩm</p>
+                <p class="label">Ấn phẩm</p>
+                <button id="downloadButton" style="display: none;">Download</button>
                 <input type="number" id="fontSizeTitle" placeholder="Kích thước chữ" min="10" max="100" value="35" style="margin-top: 20px; display: none;"> <!-- Input kích thước chữ -->
                 <img id="preview" alt="Hình ảnh Preview" style="display: none;">
                 <canvas id="imageCanvas"></canvas>
-                <button id="downloadButton" style="display: none;">Download</button>
             </section>
         </div>
     </main>

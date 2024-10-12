@@ -1,9 +1,18 @@
 const imageInput = document.getElementById('imageInput')
 const imagePreview = document.getElementById('imagePreview')
+
 const generateImage = document.getElementById('newsCreate')
+const generateCaption = document.getElementById('newsCreate');
+
 const downloadButton = document.getElementById('downloadButton');
 const newsTitle = document.getElementById('newsTitle');
 const fontSizeTitle = document.getElementById('fontSizeTitle');
+
+const newsCaption = document.getElementById('newsInput');
+
+const captionPreview = document.getElementById('captionPreview');
+const clearImgBtn = document.getElementById('clearImgBtn');
+
 let img = new Image();
 let canvas = document.getElementById('imageCanvas');
 let ctx = canvas.getContext('2d');
@@ -22,20 +31,23 @@ imageInput.addEventListener('change', function(event) {
     }
 });
 
-document.getElementById('newsSubmitBtn').addEventListener('click', function() {
-    const userInput = document.getElementById('newsInput').value;
-    const previewText = document.getElementById('previewText');
-
-    if (userInput) {
-        previewText.textContent = userInput; // Hiển thị nội dung người dùng nhập
-    } else {
-        previewText.textContent = 'Vui lòng nhập văn bản để hiển thị preview!'; // Thông báo nếu không có văn bản
+document.body.addEventListener('paste', (event) => {
+    const items = event.clipboardData.items;
+    for (let item of items) {
+        if (item.type.startsWith('image/')) {
+            const file = item.getAsFile();
+            const reader = new FileReader();
+            reader.onload = (e) => displayImage(e.target.result);
+            reader.readAsDataURL(file);
+        }
     }
 });
 
-
-
-
+function displayImage(src) {
+    imagePreview.src = src;
+    imagePreview.style.display = 'block';
+    clearImgBtn.style.display = 'block'; 
+}
 
 generateImage.addEventListener('click', () => {
     img.src = imagePreview.src;
@@ -51,7 +63,7 @@ generateImage.addEventListener('click', () => {
         ctx.drawImage(template, 0, 0);
 
         const textToDraw = newsTitle.value || 'Chữ mặc định'; // Nếu không có chữ nhập vào, dùng chữ mặc định
-        const fontSize = fontSizeTitle.value || 40;
+        // const fontSize = fontSizeTitle.value || 40;
         // Vẽ chữ lên canvas
         // ctx.font = '33px'; // Sử dụng font tùy chỉnh
         ctx.font = '40px UTM-Neutra';
@@ -65,6 +77,16 @@ generateImage.addEventListener('click', () => {
 
     };
 });
+
+generateCaption.addEventListener('click', function(event){
+    event.preventDefault(); // Ngăn trang tự load lại
+    const caption = newsCaption.value;
+    if(caption) {
+        captionPreview.textContent = caption;
+    } else {
+        captionPreview.textContent = "Vui lòng nhập caption!"
+    }
+})
 
 // Download the canvas as an image
 downloadButton.addEventListener('click', () => {
